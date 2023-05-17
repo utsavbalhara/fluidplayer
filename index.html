@@ -32,7 +32,7 @@
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	background-image: url(/res/videoselect.png);
+	background-image: url(/fluidplayer/res/videoselect.png);
 	background-position: center;
 	background-size: 300px;
 	background-repeat: no-repeat;
@@ -182,7 +182,7 @@ button:focus {
 #playPause {
 	width: 25px;
 	height: 25px;
-	background-image: url("/res/icons8-play-64.png");
+	background-image: url("/fluidplayer/res/icons8-play-64.png");
 	background-size: cover;
 	transition: background-image 0.1s ease-in-out;
 	margin-left: 35px;
@@ -192,7 +192,7 @@ button:focus {
 #fullscreen {
 	width: 25px;
 	height: 25px;
-	background-image: url("/res/icons8-full-screen-60.png");
+	background-image: url("/fluidplayer/res/icons8-full-screen-60.png");
 	background-size: cover;
 	transition: background-image 0.1s ease-in-out;
 	margin-right: 35px;
@@ -286,48 +286,48 @@ if (video.paused) {
 playPause.addEventListener("click", () => {
   if (video.paused) {
     video.play();
-    playPause.style.backgroundImage = 'url("/res/icons8-pause-64hover.png")';
+    playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-pause-64hover.png")';
 	
 	
   } else {
     video.pause();
-    playPause.style.backgroundImage = 'url("/res/icons8-play-64hover.png")';
+    playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-play-64hover.png")';
 	
   }
 });
 
 playPause.addEventListener("mouseover", () => {
   if (video.paused) {
-    playPause.style.backgroundImage = 'url("/res/icons8-play-64hover.png")';
+    playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-play-64hover.png")';
   } else {
-    playPause.style.backgroundImage = 'url("/res/icons8-pause-64hover.png")';
+    playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-pause-64hover.png")';
   }
 });
 
 playPause.addEventListener("mouseout", () => {
   if (video.paused) {
-    playPause.style.backgroundImage = 'url("/res/icons8-play-64.png")';
+    playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-play-64.png")';
   } else {
-    playPause.style.backgroundImage = 'url("/res/icons8-pause-64.png")';
+    playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-pause-64.png")';
   }
 });
 
 fullscreen.addEventListener("mouseover", () => {
 	if (videoContainer.classList.contains("fullscreen")) {
-		fullscreen.style.backgroundImage = 'url("/res/icons8-normal-screen-60 hover.png")'; 
+		fullscreen.style.backgroundImage = 'url("/fluidplayer/res/icons8-normal-screen-60 hover.png")'; 
 	
 	} else {
-		fullscreen.style.backgroundImage = 'url("/res/icons8-full-screen-60 hover.png")'; 
+		fullscreen.style.backgroundImage = 'url("/fluidplayer/res/icons8-full-screen-60 hover.png")'; 
 	}
 	
 });
 
 fullscreen.addEventListener("mouseout", () => {
 	if (videoContainer.classList.contains("fullscreen")) {
-		fullscreen.style.backgroundImage = 'url("/res/icons8-normal-screen-60.png")'; 
+		fullscreen.style.backgroundImage = 'url("/fluidplayer/res/icons8-normal-screen-60.png")'; 
 	
 	} else {
-		fullscreen.style.backgroundImage = 'url("/res/icons8-full-screen-60.png")'; 
+		fullscreen.style.backgroundImage = 'url("/fluidplayer/res/icons8-full-screen-60.png")'; 
 	}
 	
 });
@@ -416,10 +416,10 @@ document.addEventListener("keydown", (e) => {
 	} else if (e.code === "Space") {
 		if (video.paused) {
 			video.play();
-			playPause.style.backgroundImage = 'url("/res/icons8-pause-64hover.png")';
+			playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-pause-64hover.png")';
 		} else {
 			video.pause();
-			playPause.style.backgroundImage = 'url("/res/icons8-play-64hover.png")';
+			playPause.style.backgroundImage = 'url("/fluidplayer/res/icons8-play-64hover.png")';
 		}
 	}
 });
