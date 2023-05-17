@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Video Player</title>
+	<style>
+
+.wrapper {
+	height: 83vh;
+	width: calc(83vh * 16 / 9);
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	border-radius: 20px;
+	box-shadow: 0px 0px 7px -0.5px #0f1d2b;
+	border: 0.1px solid #ebf4fc;
+	margin-top: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.video-container {
+	height: 100%;
+	position: relative;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	background-image: url(/res/videoselect.png);
+	background-position: center;
+	background-size: 300px;
+	background-repeat: no-repeat;
+	background-color: #fff;
+}
+
+video {
+	position: relative;
+	top: 0;
+	left: 0;
+	padding-bottom: 0;
+}
+
+.controls {
+	position: absolute;
+	bottom: -50px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 75%;
+	height: 50px;
+	background-color: rgba(47, 49, 53, 0.75);
+	backdrop-filter: blur(30px);
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+	border-radius: 16px;
+	transition: bottom 0.5s cubic-bezier(.65, -0.02, .31, .99);
+	display: flex;
+	justify-self: center;
+	border: 0.25px solid rgba(109, 114, 117, 0.56);
+	zoom: 110%;
+	box-shadow: rgba(0, 0, 0, 0.53) 0px 1.5px 6px 0px;
+}
+
+button {
+	background-color: transparent;
+	border: none;
+	font-size: 18px;
+	color: #fff;
+	cursor: pointer;
+	transition: color 0.3s ease-in-out;
+}
+
+button:hover {
+	color: #9dceff;
+}
+
+input[type="range"] {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 50%;
+	height: 2px;
+	background-color: #ddd;
+	cursor: pointer;
+	outline: none;
+	border-radius: 10px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	background-color: #007aff;
+	border: 2px solid #007aff;
+	border-radius: 50%;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+}
+
+input[type="range"]:hover::-webkit-slider-thumb {
+	background-color: #65b2ff;
+	border-color: #65b2ff;
+}
+
+.video-container.fullscreen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	padding-bottom: 0;
+	z-index: 9999;
+	
+}
+
+button:focus {
+	outline: none;
+}
+
+#video::-webkit-media-controls {
+	display: none !important;
+}
+
+.progress-bar {
+	background-color: rgba(136, 153, 161, 0.637);
+	height: 10px;
+	width: 50%;
+	margin: 0 10px;
+	border-radius: 10px;
+	overflow: hidden;
+	display: flex;
+}
+
+.progress-bar .progress {
+	height: 100%;
+	background-color: rgb(255, 255, 255);
+	border-radius: 10px;
+	transition: width 0.1s linear;
+	transition: background-color 0.15s ease-in-out;
+}
+
+.progress-bar .progress:hover {
+	background-color: #65b2ff;
+}
+
+.video-container.fullscreen .progress-bar {
+	width: 80%;
+}
+
+.video-container.fullscreen .controls {
+	width: 100%;
+	margin: 0;
+	border-radius: 0;
+	height: 50px;
+	margin-bottom: -10px;
+
+}
+
+.video-container.fullscreen .progress-bar {
+	background-color: rgba(136, 153, 161, 0.637);
+	border-radius: 10px;
+	transition: width 0.3s ease-in-out;
+}
+
+.video-container::before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	z-index: -1;
+}
+
+#playPause {
+	width: 25px;
+	height: 25px;
+	background-image: url("/res/icons8-play-64.png");
+	background-size: cover;
+	transition: background-image 0.1s ease-in-out;
+	margin-left: 35px;
+	margin-top: 0.8px;
+}
+
+#fullscreen {
+	width: 25px;
+	height: 25px;
+	background-image: url("/res/icons8-full-screen-60.png");
+	background-size: cover;
+	transition: background-image 0.1s ease-in-out;
+	margin-right: 35px;
+}
+
+
+/* Add CSS for time completed and total time elements */
+#timeCompleted,
+#totalTime {
+	color: #fff;
+	font-size: 16px;
+	margin: 3px 10px 3px 10px;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<div class="video-container" style="">
+			<video id="video" width="100%" height="100%" preload="metadata">
+				<source src="" type="video/mp4">
+				Please select a video on the right.
+			</video>
+
+			<div class="controls" id="controls">
+				<button id="playPause"></button>
+				<span id="timeCompleted">00:00</span>
+				<div class="progress-bar">
+
+
+					<div class="progress"></div>
+				</div>
+				<span id="totalTime">00:00</span>
+
+				<button id="speed">1x</button>
+					<button id="fullscreen"></button>
+				
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+
+const video = document.getElementById("video");
+const playPause = document.getElementById("playPause");
+const progress = document.querySelector(".progress");
+const progressBar = document.querySelector(".progress-bar");
+const speed = document.getElementById("speed");
+const fullscreen = document.getElementById("fullscreen");
+const videoContainer = document.querySelector(".video-container");
+const controls = document.getElementById("controls");
+const timeCompleted = document.getElementById("timeCompleted");
+const totalTime = document.getElementById("totalTime");
+
+const speedOptions = [0.5, 1, 1.25, 1.5, 1.75, 2];
+
+if (video.paused) {
+	playPause.classList.add("paused");
+}
+
+playPause.addEventListener("click", () => {
+  if (video.paused) {
+    video.play();
+    playPause.style.backgroundImage = 'url("/res/icons8-pause-64hover.png")';
+	
+	
+  } else {
+    video.pause();
+    playPause.style.backgroundImage = 'url("/res/icons8-play-64hover.png")';
+	
+  }
+});
+
+playPause.addEventListener("mouseover", () => {
+  if (video.paused) {
+    playPause.style.backgroundImage = 'url("/res/icons8-play-64hover.png")';
+  } else {
+    playPause.style.backgroundImage = 'url("/res/icons8-pause-64hover.png")';
+  }
+});
+
+playPause.addEventListener("mouseout", () => {
+  if (video.paused) {
+    playPause.style.backgroundImage = 'url("/res/icons8-play-64.png")';
+  } else {
+    playPause.style.backgroundImage = 'url("/res/icons8-pause-64.png")';
+  }
+});
+
+fullscreen.addEventListener("mouseover", () => {
+	if (videoContainer.classList.contains("fullscreen")) {
+		fullscreen.style.backgroundImage = 'url("/res/icons8-normal-screen-60 hover.png")'; 
+	
+	} else {
+		fullscreen.style.backgroundImage = 'url("/res/icons8-full-screen-60 hover.png")'; 
+	}
+	
+});
+
+fullscreen.addEventListener("mouseout", () => {
+	if (videoContainer.classList.contains("fullscreen")) {
+		fullscreen.style.backgroundImage = 'url("/res/icons8-normal-screen-60.png")'; 
+	
+	} else {
+		fullscreen.style.backgroundImage = 'url("/res/icons8-full-screen-60.png")'; 
+	}
+	
+});
+
+video.addEventListener("timeupdate", () => {
+	progress.style.width = `${(video.currentTime / video.duration) * 100}%`;
+});
+
+progressBar.addEventListener("click", (e) => {
+	if (videoContainer.classList.contains("fullscreen")) {
+		const progressWidth = progressBar.offsetWidth;
+		const clickX = e.offsetX;
+		const clickPercent =((clickX / progressWidth) * 100) - (clickX /157);
+		video.currentTime = (clickPercent / 100) * video.duration;
+	} else {
+		const progressWidth = progressBar.offsetWidth;
+		const clickX = e.offsetX;
+		const clickPercent =((clickX / progressWidth) * 100) - (clickX /60);
+		video.currentTime = (clickPercent / 100) * video.duration;
+	}
+});
+
+speed.addEventListener("click", () => {
+	const currentSpeed = parseFloat(speed.textContent.slice(0, -1));
+	const nextSpeedIndex = (speedOptions.indexOf(currentSpeed) + 1) % speedOptions.length;
+	const nextSpeed = speedOptions[nextSpeedIndex];
+
+	video.playbackRate = nextSpeed;
+	speed.textContent = `${nextSpeed}x`;
+});
+
+fullscreen.addEventListener("click", () => {
+	const videoContainer = document.querySelector(".video-container");
+	videoContainer.classList.toggle("fullscreen");
+
+	if (videoContainer.classList.contains("fullscreen")) {
+		document.documentElement.requestFullscreen();
+		videoContainer.style.paddingBottom = "0";
+		video.style.height = "1080";
+		video.style.height = "1920";
+		document.body.style.overflow = "hidden";
+
+	} else {
+		document.exitFullscreen();
+		document.body.style.overflow = "visible";
+	}
+});
+
+videoContainer.addEventListener("mousemove", (e) => {
+	const containerRect = videoContainer.getBoundingClientRect();
+	const mouseY = e.clientY - containerRect.top;
+
+	if (containerRect.height - mouseY <= 150) {
+		controls.style.bottom = "10px";
+	} else {
+		controls.style.bottom = "-52px";
+	}
+});
+
+video.addEventListener("loadedmetadata", () => {
+  totalTime.textContent = formatTime(video.duration);
+});
+
+video.addEventListener("timeupdate", () => {
+  progress.style.width = `${(video.currentTime / video.duration) * 100}%`;
+  timeCompleted.textContent = formatTime(video.currentTime);
+});
+
+function formatTime(seconds) {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+  return (
+    minutes.toString().padStart(2, "0") +
+    ":" +
+    remainingSeconds.toString().padStart(2, "0")
+  );
+}
+
+let isDragging = false;
+
+document.addEventListener("keydown", (e) => {
+	if (e.code === "ArrowLeft") {
+		video.currentTime -= 10;
+	} else if (e.code === "ArrowRight") {
+		video.currentTime += 10;
+	} else if (e.code === "Space") {
+		if (video.paused) {
+			video.play();
+			playPause.style.backgroundImage = 'url("/res/icons8-pause-64hover.png")';
+		} else {
+			video.pause();
+			playPause.style.backgroundImage = 'url("/res/icons8-play-64hover.png")';
+		}
+	}
+});
+
+
+	</script>
+
+</body>
+
+</html>
