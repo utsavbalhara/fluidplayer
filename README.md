@@ -1,2 +1,2 @@
 # fluidplayer
-A custom and aesthetic HTML5 video player
+An aesthetic HTML5 video player
