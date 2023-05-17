@@ -8,15 +8,15 @@
 	<style>
 
 .wrapper {
-	height: 83vh;
-	width: calc(83vh * 16 / 9);
+	height: 98vh;
+	width: calc(98vh * 16 / 9);
 	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	overflow: hidden;
 	border-radius: 20px;
-	box-shadow: 0px 0px 7px -0.5px #0f1d2b;
+	box-shadow: 0px 2.5px 12px 0px #868686;
 	border: 0.1px solid #ebf4fc;
 	margin-top: auto;
 	margin-bottom: auto;
@@ -198,6 +198,16 @@ button:focus {
 	margin-right: 35px;
 }
 
+#playButton{
+    transition: all .2s ease-in-out;
+    box-shadow:none;
+    background-color: #007aff; border: none; font-size: 20px; color: #ffffff; cursor: pointer; border-radius: 13px; height: 50px; width: 90px; margin-bottom: 80px;
+}
+
+#playButton:hover {
+    transform: scale(1.05);
+}
+
 
 /* Add CSS for time completed and total time elements */
 #timeCompleted,
@@ -212,6 +222,10 @@ button:focus {
 </head>
 
 <body>
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.212); width: 50%; height: 50%; display:grid; justify-items: center; align-content: space-evenly; border-radius: 23px; z-index: 999;">
+  <input type="text" placeholder="Paste video link here" style="width: 70%; height: 40px; font-size: 16px; padding: 10px; border-radius: 13px; border: 1px solid #ccc; margin-top: 80px;box-shadow: 0px 1px 4px 0px #868686; ">
+  <button id="playButton" >Play</button>
+</div>
 	<div class="wrapper">
 		<div class="video-container" style="">
 			<video id="video" width="100%" height="100%" preload="metadata">
@@ -238,6 +252,19 @@ button:focus {
 	</div>
 
 	<script>
+const playButton = document.getElementById("playButton");
+const inputField = document.querySelector("input[type='text']");
+
+playButton.addEventListener("click", () => {
+  const videoSrc = inputField.value;
+  if (videoSrc) {
+    video.src = videoSrc;
+    video.load();
+    video.play();
+    videoContainer.style.backgroundImage = "none";
+    inputField.parentElement.style.display = "none";
+  }
+});
 
 const video = document.getElementById("video");
 const playPause = document.getElementById("playPause");
